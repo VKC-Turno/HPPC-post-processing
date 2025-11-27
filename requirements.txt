@@ -8,3 +8,4 @@ nbformat
 openpyxl
 pillow
 matplotlib
+seaborn
