@@ -1,0 +1,1 @@
+Best flat_window=3, flat_threshold=0.005, RMSE=0.01041259512258746
