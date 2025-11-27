@@ -54,6 +54,17 @@ class PulseMetrics:
     def R2(self) -> float:
         return (self.V_fast - self.V_end) / self.I_step if self.I_step else np.nan
 
+    @property
+    def C1(self) -> float:
+        tau1 = self.duration_post_fast
+        R1 = self.R1
+        return tau1 / R1 if tau1 > 0 and np.isfinite(R1) and not np.isclose(R1, 0.0) else np.nan
+
+    @property
+    def C2(self) -> float:
+        tau2 = self.duration_fast_end
+        R2 = self.R2
+        return tau2 / R2 if tau2 > 0 and np.isfinite(R2) and not np.isclose(R2, 0.0) else np.nan
 
 def _gather_pulses(df: pd.DataFrame) -> List[tuple[pd.DataFrame, pd.DataFrame]]:
     steps = list(df.groupby(["Cycle No", "Step No"], sort=False))
@@ -170,6 +181,8 @@ def summarize_resistances(output_dir: str | Path, data_dir: str | Path = STITCHE
                     "R0": m.R0,
                     "R1": m.R1,
                     "R2": m.R2,
+                    "C1": m.C1,
+                    "C2": m.C2,
                     "duration_pre_post": m.duration_pre_post,
                     "duration_post_fast": m.duration_post_fast,
                     "duration_fast_end": m.duration_fast_end,
